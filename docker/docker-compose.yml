@@ -1,0 +1,51 @@
+name: contact-manager-demo
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=2KbzbN6uL3WJGypC
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql 
+    networks:
+      - contact-manager-network
+
+  backend-portal:
+    image: backend_image
+    build:
+      context: ../backend-dotnet
+      dockerfile: ContactManagerDemo.RestApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__SqlDataConnection=Server=mssql,1433;Database=ContactManager_Demo;User Id=sa;Password=2KbzbN6uL3WJGypC;TrustServerCertificate=True; # Di solito si mette nel environment file
+
+    networks:
+      - contact-manager-network
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    depends_on: 
+      - mssql
+
+  frontend:
+    image: frontend_image
+    build:
+      context: ../frontend-next
+    ports:
+      - "3000:3000"
+    networks:
+      - contact-manager-network
+    environment:
+      - NODE_ENV=production
+
+networks:
+  contact-manager-network:
+    driver: bridge
+
+volumes:
+  mssql_data:
