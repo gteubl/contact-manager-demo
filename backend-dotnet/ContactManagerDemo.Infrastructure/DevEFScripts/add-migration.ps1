@@ -6,6 +6,6 @@ Set-Location $projectRoot
 $migrationName = Read-Host "Enter the migration name"
 
 # Step 2: Run dotnet ef migrations add with the provided migration name
-$dotnetEfMigrationsAdd = "dotnet ef migrations add $migrationName --context ServiFacileDataContext --output-dir Migrations --project ./Infrastructure --startup-project ./ProvidersRestApi"
+$dotnetEfMigrationsAdd = "dotnet ef migrations add $migrationName --context AppDataContext --output-dir Migrations --project ./ContactManagerDemo.Infrastructure --startup-project ./ContactManagerDemo.RestApi"
 Write-Host "Running: $dotnetEfMigrationsAdd"
 Invoke-Expression $dotnetEfMigrationsAdd

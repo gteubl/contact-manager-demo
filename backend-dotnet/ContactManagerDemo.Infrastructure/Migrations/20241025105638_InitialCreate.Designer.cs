@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactManagerDemo.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20241025100701_InitialCreate")]
+    [Migration("20241025105638_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -49,7 +49,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Provincia")
+                    b.Property<string>("Province")
                         .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
@@ -66,7 +66,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Brescia",
-                            Provincia = "BS"
+                            Province = "BS"
                         },
                         new
                         {
@@ -75,7 +75,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Genova",
-                            Provincia = "GE"
+                            Province = "GE"
                         },
                         new
                         {
@@ -84,7 +84,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Milano",
-                            Provincia = "MI"
+                            Province = "MI"
                         },
                         new
                         {
@@ -93,7 +93,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Roma",
-                            Provincia = "RM"
+                            Province = "RM"
                         },
                         new
                         {
@@ -102,7 +102,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Napoli",
-                            Provincia = "NA"
+                            Province = "NA"
                         },
                         new
                         {
@@ -111,7 +111,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Torino",
-                            Provincia = "TO"
+                            Province = "TO"
                         },
                         new
                         {
@@ -120,7 +120,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Firenze",
-                            Provincia = "FI"
+                            Province = "FI"
                         },
                         new
                         {
@@ -129,7 +129,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Venezia",
-                            Provincia = "VE"
+                            Province = "VE"
                         },
                         new
                         {
@@ -138,7 +138,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Bologna",
-                            Provincia = "BO"
+                            Province = "BO"
                         },
                         new
                         {
@@ -147,7 +147,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                             IsDeleted = false,
                             LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Verona",
-                            Provincia = "VR"
+                            Province = "VR"
                         });
                 });
 

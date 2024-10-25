@@ -9,7 +9,6 @@ public static class ApplicationServiceCollectionExtensions
     public static void AddApplicationServices(this IServiceCollection services)
     {
         services.TryAddScoped<ICityService, CityService>();
-        services.TryAddScoped<IContactService, ContactService>();
         
         var mapperConfig = DtoToEntityMappers.GetMapperConfig();
         var mapper = mapperConfig.CreateMapper();

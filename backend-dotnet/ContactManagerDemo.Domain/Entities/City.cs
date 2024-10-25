@@ -10,5 +10,5 @@ public class City : BaseEntity
     
     [Required]
     [MaxLength(2)]
-    public string Provincia { get; set; }
+    public string Province { get; set; }
 }

@@ -22,6 +22,8 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<Contact>(
             entity =>
             {
+                entity.HasQueryFilter(e => e.IsDeleted == false);
+                
                 entity.Property(e => e.CreatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .ValueGeneratedOnAdd()
@@ -37,6 +39,8 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<City>(
             entity =>
             {
+                entity.HasQueryFilter(e => e.IsDeleted == false);
+                
                 entity.Property(e => e.CreatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .ValueGeneratedOnAdd()

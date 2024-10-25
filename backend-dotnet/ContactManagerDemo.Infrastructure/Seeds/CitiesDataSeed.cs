@@ -19,16 +19,16 @@ public static class CitiesDataSeed
     public static void Seed(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<City>().HasData(
-            new City { Id = BresciaId, Name = "Brescia", Provincia = "BS" },
-            new City { Id = GenovaId, Name = "Genova", Provincia = "GE" },
-            new City { Id = MilanoId, Name = "Milano", Provincia = "MI" },
-            new City { Id = RomaId, Name = "Roma", Provincia = "RM" },
-            new City { Id = NapoliId, Name = "Napoli", Provincia = "NA" },
-            new City { Id = TorinoId, Name = "Torino", Provincia = "TO" },
-            new City { Id = FirenzeId, Name = "Firenze", Provincia = "FI" },
-            new City { Id = VeneziaId, Name = "Venezia", Provincia = "VE" },
-            new City { Id = BolognaId, Name = "Bologna", Provincia = "BO" },
-            new City { Id = VeronaId, Name = "Verona", Provincia = "VR" }
+            new City { Id = BresciaId, Name = "Brescia", Province  = "BS" },
+            new City { Id = GenovaId, Name = "Genova", Province = "GE" },
+            new City { Id = MilanoId, Name = "Milano", Province = "MI" },
+            new City { Id = RomaId, Name = "Roma", Province = "RM" },
+            new City { Id = NapoliId, Name = "Napoli", Province = "NA" },
+            new City { Id = TorinoId, Name = "Torino", Province = "TO" },
+            new City { Id = FirenzeId, Name = "Firenze", Province = "FI" },
+            new City { Id = VeneziaId, Name = "Venezia", Province = "VE" },
+            new City { Id = BolognaId, Name = "Bologna", Province = "BO" },
+            new City { Id = VeronaId, Name = "Verona", Province = "VR" }
         );
     }
 }

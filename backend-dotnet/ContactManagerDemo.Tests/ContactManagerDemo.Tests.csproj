@@ -33,4 +33,8 @@
       <ProjectReference Include="..\ContactManagerDemo.RestApi\ContactManagerDemo.RestApi.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="ContactServiceTests.cs" />
+    </ItemGroup>
+
 </Project>

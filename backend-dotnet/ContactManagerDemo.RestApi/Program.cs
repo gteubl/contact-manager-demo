@@ -1,3 +1,4 @@
+using ContactManagerDemo.Application.Queries.Contacts;
 using ContactManagerDemo.Application.Services;
 using ContactManagerDemo.Infrastructure.DataContext;
 using ContactManagerDemo.Infrastructure.Seeds;
@@ -17,6 +18,11 @@ builder.Services.AddDbContext<AppDataContext>(options =>
 
 
 builder.Services.AddApplicationServices();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetContactsQuery).Assembly));
+
+
 
 var app = builder.Build();
 

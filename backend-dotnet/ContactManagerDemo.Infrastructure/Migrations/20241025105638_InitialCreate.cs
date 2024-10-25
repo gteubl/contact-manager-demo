@@ -19,7 +19,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Provincia = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    Province = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -58,7 +58,7 @@ namespace ContactManagerDemo.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Cities",
-                columns: new[] { "Id", "IsDeleted", "Name", "Provincia" },
+                columns: new[] { "Id", "IsDeleted", "Name", "Province" },
                 values: new object[,]
                 {
                     { new Guid("2715bbd6-b877-4d92-87f1-fc5c9a003d72"), false, "Napoli", "NA" },

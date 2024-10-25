@@ -23,7 +23,7 @@ public class CityService : ICityService
         
     }
     
-    public async Task<CityDto?> GetCityByIdAsync(int id)
+    public async Task<CityDto?> GetCityByIdAsync(Guid id)
     {
         var city = await _appDataContext.Cities.FindAsync(id);
         return city == null ? null : _mapper.Map<CityDto>(city);
