@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactManagerDemo.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20241024142734_InitialCreate")]
+    [Migration("20241025100701_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -30,6 +30,19 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -49,60 +62,90 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("c85b5b8f-5b67-4a2a-8f93-79f751a72c7e"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Brescia",
                             Provincia = "BS"
                         },
                         new
                         {
                             Id = new Guid("60f2228a-5c90-4eec-b206-d5192c057519"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Genova",
                             Provincia = "GE"
                         },
                         new
                         {
                             Id = new Guid("9cc69728-ad13-43dd-a93b-3d733ed9e7cb"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Milano",
                             Provincia = "MI"
                         },
                         new
                         {
                             Id = new Guid("e52cacbe-bcb7-4ee9-bcd3-6c7758bbcf64"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Roma",
                             Provincia = "RM"
                         },
                         new
                         {
                             Id = new Guid("2715bbd6-b877-4d92-87f1-fc5c9a003d72"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Napoli",
                             Provincia = "NA"
                         },
                         new
                         {
                             Id = new Guid("57ecb213-4180-40de-bf53-dc37c74c25bb"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Torino",
                             Provincia = "TO"
                         },
                         new
                         {
                             Id = new Guid("92fb889b-4b6e-4021-9b02-6de5e786d408"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Firenze",
                             Provincia = "FI"
                         },
                         new
                         {
                             Id = new Guid("b4f4e3de-b40f-4749-8484-82e5b072a08a"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Venezia",
                             Provincia = "VE"
                         },
                         new
                         {
                             Id = new Guid("59fe6a19-1672-4d63-885e-02d167e42648"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Bologna",
                             Provincia = "BO"
                         },
                         new
                         {
                             Id = new Guid("7998bdb8-d0cb-42e5-b5e0-bb4d7519cf74"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LastUpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Verona",
                             Provincia = "VR"
                         });
@@ -120,6 +163,11 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                     b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -133,10 +181,18 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -148,63 +204,6 @@ namespace ContactManagerDemo.Infrastructure.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Contacts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("1773734c-5d93-48d4-8c96-6ad7e1f16d7c"),
-                            BirthDate = new DateTime(1960, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CityId = new Guid("9cc69728-ad13-43dd-a93b-3d733ed9e7cb"),
-                            Email = "mario.rossi@example.com",
-                            FirstName = "Mario",
-                            Gender = 1,
-                            LastName = "Rossi",
-                            PhoneNumber = "+39 340 123 4567"
-                        },
-                        new
-                        {
-                            Id = new Guid("79da87ef-ad11-405f-9b95-0b1f597b3d92"),
-                            BirthDate = new DateTime(1977, 5, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CityId = new Guid("60f2228a-5c90-4eec-b206-d5192c057519"),
-                            Email = "luca.toni@example.com",
-                            FirstName = "Luca",
-                            Gender = 1,
-                            LastName = "Toni",
-                            PhoneNumber = "+39 331 987 6543"
-                        },
-                        new
-                        {
-                            Id = new Guid("842adc90-87d2-42f7-9c1d-18b268ad0417"),
-                            BirthDate = new DateTime(1974, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CityId = new Guid("e52cacbe-bcb7-4ee9-bcd3-6c7758bbcf64"),
-                            Email = "giovanna.mezzogiorno@example.com",
-                            FirstName = "Giovanna",
-                            Gender = 2,
-                            LastName = "Mezzogiorno",
-                            PhoneNumber = "+39 392 456 7890"
-                        },
-                        new
-                        {
-                            Id = new Guid("e682b5d5-a9e3-4745-b394-1081b640e4e5"),
-                            BirthDate = new DateTime(1934, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CityId = new Guid("2715bbd6-b877-4d92-87f1-fc5c9a003d72"),
-                            Email = "sophia.loren@example.com",
-                            FirstName = "Sophia",
-                            Gender = 2,
-                            LastName = "Loren",
-                            PhoneNumber = "+39 349 234 5678"
-                        },
-                        new
-                        {
-                            Id = new Guid("3e67d961-0d7a-4070-b2a6-3bc5ef2e5e5c"),
-                            BirthDate = new DateTime(1967, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CityId = new Guid("92fb889b-4b6e-4021-9b02-6de5e786d408"),
-                            Email = "roberto.baggio@example.com",
-                            FirstName = "Roberto",
-                            Gender = 1,
-                            LastName = "Baggio",
-                            PhoneNumber = "+39 320 678 1234"
-                        });
                 });
 
             modelBuilder.Entity("ContactManagerDemo.Domain.Entities.Contact", b =>

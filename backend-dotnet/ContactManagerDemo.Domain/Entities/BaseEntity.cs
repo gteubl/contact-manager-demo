@@ -9,4 +9,9 @@ public class BaseEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     
+    public DateTime CreatedAt { get; set; }
+    public DateTime LastUpdatedAt { get; set; }
+    public bool IsDeleted { get; set; }
+    
+    
 }

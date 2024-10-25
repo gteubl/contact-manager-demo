@@ -6,4 +6,21 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ContactManagerDemo.Infrastructure\ContactManagerDemo.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Services\ICityService.cs">
+        <DependentUpon>CityService.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\IContactService.cs">
+        <DependentUpon>ContactService.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+    </ItemGroup>
+
 </Project>

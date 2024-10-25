@@ -1,3 +1,4 @@
+using ContactManagerDemo.Application.Services;
 using ContactManagerDemo.Infrastructure.DataContext;
 using ContactManagerDemo.Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,10 @@ builder.Services.AddDbContext<AppDataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlDataConnection"), sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
+
+
+
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
