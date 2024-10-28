@@ -2,6 +2,7 @@ using ContactManagerDemo.Application.Queries.Contacts;
 using ContactManagerDemo.Application.Services;
 using ContactManagerDemo.Infrastructure.DataContext;
 using ContactManagerDemo.Infrastructure.Seeds;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,28 @@ builder.Services.AddApplicationServices();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetContactsQuery).Assembly));
 
+var origins = builder.Configuration.GetValue<string>("AllowOrigins").Split(";");
+
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddDefaultPolicy(
+            corsPolicyBuilder => corsPolicyBuilder.WithOrigins(origins)
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithExposedHeaders("Content-Disposition")
+                .WithExposedHeaders("Token-Expired")
+        );
+    }
+);
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = false;
+    options.SerializerOptions.PropertyNamingPolicy = null;
+    options.SerializerOptions.WriteIndented = true;
+});
 
 
 var app = builder.Build();
@@ -60,7 +83,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

@@ -12,5 +12,5 @@ public class ContactDto
     public required string Email { get; set; }
     public DateTime? BirthDate { get; set; }
     public string? PhoneNumber { get; set; }
-    public City? City { get; set; }
+    public CityDto? City { get; set; }
 }

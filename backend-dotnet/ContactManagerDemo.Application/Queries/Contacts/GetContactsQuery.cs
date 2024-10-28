@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using ContactManagerDemo.Application.Dto;
 using ContactManagerDemo.Application.Dto.Responses;
 using ContactManagerDemo.Common.GridData;
 using ContactManagerDemo.Domain.Entities;
@@ -37,12 +39,12 @@ public class GetContactsQueryHandler
             _ => null
         });
 
-
         // Apply Sorting
         query = query.ApplySorting(request.Filter);
 
         //Select
-        var data = query.Select(x => _mapper.Map<ContactsResponse>(x))
+        var data = query
+            .ProjectTo<ContactsResponse>(_mapper.ConfigurationProvider)
             .AsNoTracking();
 
         return await data.ToGridDataSourceAsync(request.Filter);

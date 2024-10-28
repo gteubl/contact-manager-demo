@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "npm-install-legacy": "npm install --legacy-peer-deps",
-    "generate-api": "openapi-generator-cli generate -i http://localhost:5000/swagger/v1/swagger.json -g javascript -o ./src/services/api"
+    "generate-api": "openapi-generator-cli generate -i http://localhost:5000/swagger/v1/swagger.json -g  typescript-fetch -o ./src/services/api"
   },
   "dependencies": {
     "next": "15.0.1",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
     "primereact": "^10.8.4",
     "react": "19.0.0-rc-69d4b800-20241021",
     "react-dom": "19.0.0-rc-69d4b800-20241021"

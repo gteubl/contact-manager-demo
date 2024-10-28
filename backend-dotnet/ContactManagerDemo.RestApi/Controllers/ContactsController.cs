@@ -1,6 +1,7 @@
 ﻿using ContactManagerDemo.Application.Commands.Contacts;
 using ContactManagerDemo.Application.Dto;
 using ContactManagerDemo.Application.Dto.Requests;
+using ContactManagerDemo.Application.Dto.Responses;
 using ContactManagerDemo.Application.Queries.Contacts;
 using ContactManagerDemo.Common.GridData;
 using MediatR;
@@ -20,8 +21,8 @@ public class ContactsController : ControllerBase
      che richiede una struttura dati complessa e non si presta facilmente a una query string in GET.
      Mentre parametri come `Skip`, `Take`, `OrderBy` e `OrderDescending` avrebbero potuto essere gestiti
       tramite GET, l'uso di POST permette una maggiore flessibilità per inviare strutture di dati più articolate. */
-    [HttpPost]
-    public async Task<IActionResult> GetContacts(ContactsRequest request)
+    [HttpPost ("contacts")]
+    public async  Task<ActionResult<GridDataSource<ContactsResponse>>> GetContacts(ContactsRequest request)
     {
         var query = new GetContactsQuery(request);
         var result = await _mediator.Send(query, HttpContext.RequestAborted);
@@ -29,8 +30,8 @@ public class ContactsController : ControllerBase
     }
     
     /* In questa richiesta utilizziamo il metodo standard GET poiché i parametri sono semplici e possono essere facilmente passati come query string.*/
-    [HttpGet("contacts/simple")]
-    public async Task<IActionResult> GetSimpleContacts([FromQuery] int skip = 0, [FromQuery] int take = 10, [FromQuery] string? orderBy = null, [FromQuery] bool orderDescending = false,
+    [HttpGet("contacts")]
+    public async Task<ActionResult<GridDataSource<ContactsResponse>>> GetSimpleContacts([FromQuery] int skip = 0, [FromQuery] int take = 10, [FromQuery] string? orderBy = null, [FromQuery] bool orderDescending = false,
         [FromQuery] string? magicFilter = null
         )
     {
@@ -49,7 +50,7 @@ public class ContactsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("create-contacts")]
     public async Task<IActionResult> CreateContact(ContactDto contactDto)
     {
         var command = new CreateContactCommand(contactDto);
