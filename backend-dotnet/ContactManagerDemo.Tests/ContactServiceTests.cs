@@ -1,5 +1,6 @@
 ﻿using ContactManagerDemo.Application.Commands.Contacts;
 using ContactManagerDemo.Application.Dto;
+using ContactManagerDemo.Application.Dto.Requests;
 using ContactManagerDemo.Application.Queries.Contacts;
 using ContactManagerDemo.Domain.Enums;
 
@@ -11,8 +12,18 @@ public class ContactServiceTests : TestBase
     public async Task GetContactsAsyncTest()
     {
         // Arrange
+        var filter = new ContactsRequest()
+        {
+            Skip = 0,
+            Take = 10,
+            OrderBy = "FirstName",
+            OrderDescending = false,
+            ColumnsToFilter = [],
+            MagicFilter = null
+        };
+        
         // Act
-        var result = await Mediator.Send(new GetContactsQuery());
+        var result = await Mediator.Send(new GetContactsQuery(filter));
 
         // Assert
         Assert.IsNotNull(result);

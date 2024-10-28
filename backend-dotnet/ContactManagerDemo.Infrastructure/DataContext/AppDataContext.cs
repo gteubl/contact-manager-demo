@@ -22,6 +22,7 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<Contact>(
             entity =>
             {
+                
                 entity.HasQueryFilter(e => e.IsDeleted == false);
                 
                 entity.Property(e => e.CreatedAt)
@@ -33,6 +34,12 @@ public class AppDataContext : DbContext
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .ValueGeneratedOnAdd()
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+                
+                entity.Property(e => e.FirstName)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AI");
+                
+                entity.Property(e => e.LastName)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AI");
             }
         );
         
@@ -50,6 +57,9 @@ public class AppDataContext : DbContext
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .ValueGeneratedOnAdd()
                     .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+                
+                entity.Property(e => e.Name)
+                    .UseCollation("SQL_Latin1_General_CP1_CI_AI");
             }
         );
 

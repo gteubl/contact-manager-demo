@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ContactManagerDemo.Application.Dto;
+using ContactManagerDemo.Application.Dto.Responses;
+using ContactManagerDemo.Common.GridData;
 using ContactManagerDemo.Domain.Entities;
 
 namespace ContactManagerDemo.Application.Mappers;
@@ -20,8 +22,22 @@ public static class DtoToEntityMappers
                 .IgnoreCommonProperties();
             
             cfg.CreateMap<City, CityDto>();
+            
+            cfg.CreateMap<ContactsResponse, Contact>()
+                .IgnoreCommonProperties();
+            
+            cfg.CreateMap<Contact, ContactsResponse>()
+                .IgnoreGridDataItemProperties();
                 
         });
+    }
+    
+    public static void IgnoreGridDataItemProperties<TSource, TDestination>(
+        this IMappingExpression<TSource, TDestination> mapping)
+    where TDestination : IGridDataItem
+    {
+        mapping
+            .ForMember(dest => dest.Selected, opt => opt.Ignore());
     }
 
     public static void IgnoreCommonProperties<TSource, TDestination>(

@@ -1,28 +1,21 @@
-﻿using AutoMapper;
-using ContactManagerDemo.Application.Dto.Responses;
-using ContactManagerDemo.Common.GridData;
-using ContactManagerDemo.Domain.Entities;
-using ContactManagerDemo.Infrastructure.DataContext;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
-namespace ContactManagerDemo.Application.Queries.Contacts;
 
-public record GetContactsQuery(GridDataRequest Filter) : IRequest<GridDataSource<ContactsResponse>>;
-
-public class GetContactsQueryHandler
-    : IRequestHandler<GetContactsQuery, GridDataSource<ContactsResponse>>
+```csharp
+// Request classes must inherit from GridDataRequest
+public class ContactsRequest : GridDataRequest
 {
-    private readonly AppDataContext _appDataContext;
-    private readonly IMapper _mapper;
+}
 
-    public GetContactsQueryHandler(AppDataContext appDataContext, IMapper mapper)
-    {
-        _appDataContext = appDataContext;
-        _mapper = mapper;
-    }
+// Response classes must inherit from IGridDataItem
+public class ContactDto  : ContactDto, IGridDataItem
+{
+    public bool? Selected { get; set; }
+}
+    
+```
 
-    public async Task<GridDataSource<ContactsResponse>> Handle(GetContactsQuery request,
+```csharp
+ public async Task<GridDataSource<ContactsResponse>> Handle(GetContactsQuery request,
         CancellationToken cancellationToken)
     {
         var query = _appDataContext.Contacts.AsQueryable();
@@ -47,4 +40,4 @@ public class GetContactsQueryHandler
 
         return await data.ToGridDataSourceAsync(request.Filter);
     }
-}
+```
