@@ -1,5 +1,6 @@
-﻿using ContactManagerDemo.Application.Dto;
-using ContactManagerDemo.Application.Services;
+﻿using ContactManagerDemo.Application.Commands.Contacts;
+using ContactManagerDemo.Application.Dto;
+using ContactManagerDemo.Application.Queries.Contacts;
 using ContactManagerDemo.Domain.Enums;
 
 namespace ContactManagerDemo.Tests;
@@ -7,13 +8,11 @@ namespace ContactManagerDemo.Tests;
 public class ContactServiceTests : TestBase
 {
     [Test]
-    public void GetContactsAsyncTest()
+    public async Task GetContactsAsyncTest()
     {
         // Arrange
-        var contactService = new ContactService(AppDataContext, Mapper);
-
         // Act
-        var result = contactService.GetContactsAsync().GetAwaiter().GetResult();
+        var result = await Mediator.Send(new GetContactsQuery());
 
         // Assert
         Assert.IsNotNull(result);
@@ -24,11 +23,10 @@ public class ContactServiceTests : TestBase
     public async Task GetContactByIdAsyncTest()
     {
         // Arrange
-        var contactService = new ContactService(AppDataContext, Mapper);
         var existingContactId = Guid.Parse("1773734c-5d93-48d4-8c96-6ad7e1f16d7c");
 
         // Act
-        var result = await contactService.GetContactByIdAsync(existingContactId);
+        var result = await Mediator.Send(new GetContactByIdQuery(existingContactId));
 
         // Assert
         Assert.IsNotNull(result);
@@ -39,17 +37,17 @@ public class ContactServiceTests : TestBase
     public async Task CreateContactAsyncTest()
     {
         // Arrange
-        var contactService = new ContactService(AppDataContext, Mapper);
         var newContact = new ContactDto 
         { 
             FirstName = "Joe", 
             LastName = "Doe",
             Email = "joedoe@example.com",
             Gender = Gender.Male,
+            
         };
 
         // Act
-        var result = await contactService.CreateContactAsync(newContact);
+        var result = await Mediator.Send(new CreateContactCommand(newContact)); 
 
         // Assert
         Assert.IsNotNull(result);
@@ -62,11 +60,10 @@ public class ContactServiceTests : TestBase
     public async Task SearchContactsAsyncTest()
     {
         // Arrange
-        var contactService = new ContactService(AppDataContext, Mapper);
         var searchTerm = "John";
 
         // Act
-        var results = await contactService.SearchContactsAsync(searchTerm);
+        var results = await Mediator.Send(new SearchContactsQuery(searchTerm));
 
         // Assert
         Assert.IsNotNull(results);

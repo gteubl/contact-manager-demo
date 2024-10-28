@@ -6,5 +6,9 @@
     &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.CityServiceTests.GetCitiesAsyncTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.CityServiceTests.GetCityByIdAsyncTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.ContactServiceTests.GetContactByIdAsyncTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.ContactServiceTests.GetContactsAsyncTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.ContactServiceTests.CreateContactAsyncTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.ContactServiceTests.SearchContactsAsyncTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::1BE8455B-D31C-431C-8F14-3B0DACF3F5BA::net8.0::ContactManagerDemo.Tests.CityServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

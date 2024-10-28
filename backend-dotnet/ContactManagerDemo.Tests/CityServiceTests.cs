@@ -1,19 +1,17 @@
-﻿using ContactManagerDemo.Application.Services;
+﻿using ContactManagerDemo.Application.Queries.Cities;
+using ContactManagerDemo.Application.Services;
 
 namespace ContactManagerDemo.Tests;
 
 public class CityServiceTests : TestBase
 {
     [Test]
-    public void GetCitiesAsyncTest()
+    public async Task GetCitiesAsyncTest()
     {
         
-        
         // Arrange
-        var cityService = new CityService(AppDataContext, Mapper);
-        
         // Act
-        var result = cityService.GetCitiesAsync().GetAwaiter().GetResult();
+        var result = await Mediator.Send(new GetCitiesQuery());
         
         // Assert
         Assert.IsNotNull(result);
@@ -21,15 +19,14 @@ public class CityServiceTests : TestBase
     }
     
     [Test]
-    public void GetCityByIdAsyncTest()
+    public async Task GetCityByIdAsyncTest()
     {
         
         // Arrange
-        var cityService = new CityService(AppDataContext, Mapper);
         var cityId = Guid.Parse("59FE6A19-1672-4D63-885E-02D167E42648");
         
         // Act
-        var result = cityService.GetCityByIdAsync(cityId).GetAwaiter().GetResult();
+        var result = await Mediator.Send(new GetCityByIdQuery(cityId));
         
         // Assert
         Assert.IsNotNull(result);

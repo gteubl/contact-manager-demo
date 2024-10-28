@@ -8,20 +8,17 @@ namespace ContactManagerDemo.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ContactsController  : ControllerBase
+public class ContactsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public ContactsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    public ContactsController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
     public async Task<IActionResult> GetContacts()
     {
         var query = new GetContactsQuery();
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, HttpContext.RequestAborted);
         return Ok(result);
     }
 
@@ -29,8 +26,7 @@ public class ContactsController  : ControllerBase
     public async Task<IActionResult> CreateContact(ContactDto contactDto)
     {
         var command = new CreateContactCommand(contactDto);
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, HttpContext.RequestAborted);
         return Ok(result);
-    
-}
+    }
 }

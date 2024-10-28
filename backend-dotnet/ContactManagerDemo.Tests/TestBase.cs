@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ContactManagerDemo.Application.Mappers;
+using ContactManagerDemo.Application.Queries.Contacts;
 using ContactManagerDemo.Infrastructure.DataContext;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,7 @@ public abstract class TestBase
     protected readonly AppDataContext AppDataContext;
     protected readonly IServiceProvider ServiceProvider;
     protected readonly IMapper Mapper;
+    protected readonly IMediator Mediator;
 
     protected TestBase()
     {
@@ -37,7 +40,14 @@ public abstract class TestBase
         serviceCollection.AddSingleton<IConfiguration>(Config);
         serviceCollection.AddSingleton(Mapper);
         serviceCollection.AddScoped(_ => AppDataContext);
+        
+        // Mediator
+        serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetContactsQuery).Assembly));
+        
+        
         ServiceProvider = serviceCollection.BuildServiceProvider();
+        
+        Mediator = ServiceProvider.GetRequiredService<IMediator>();
     }
     
     [OneTimeSetUp]

@@ -20,13 +20,11 @@ public class Contact : BaseEntity
     [MaxLength(254)]
     public string Email { get; set; }
 
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
     [MaxLength(20)]
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
-    [Required]
-    public City City { get; set; }
-
-    public Guid CityId { get; set; }
+    public City? City { get; set; }
+    public Guid? CityId { get; set; }
 }
