@@ -32,11 +32,14 @@ public static class GridDataSourceUtils
         }
 
         var predicate = PredicateBuilder.False<T>();
-        predicate = request.ColumnsToFilter
+        var nonNullFilters = request.ColumnsToFilter
             .Select(column => filterExpression(column, request.MagicFilter))
-            .Aggregate(predicate, (current, filter) => current.Or(filter));
-        query = query.Where(predicate);
-        return query;
+            .Where(filter => filter != null);
+
+        predicate = nonNullFilters
+            .Aggregate(predicate, (current, filter) => current.Or(filter!));
+
+        return query.Where(predicate);
     }
 
     public static IQueryable<T> ApplySorting<T>(this IQueryable<T> query, GridDataRequest request)

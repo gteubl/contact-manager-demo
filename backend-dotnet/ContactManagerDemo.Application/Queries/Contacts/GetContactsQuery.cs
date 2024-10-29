@@ -32,10 +32,11 @@ public class GetContactsQueryHandler
         // Apply Filters
         query = query.ApplyFilters(request.Filter, (column, magicFilter) => column.ToLower() switch
         {
-            nameof(Contact.FirstName) => x => x.FirstName.Contains(magicFilter),
-            nameof(Contact.LastName) => x => x.LastName.Contains(magicFilter),
-            nameof(Contact.Email) => x => x.Email.Contains(magicFilter),
-            nameof(Contact.PhoneNumber) => x => x.PhoneNumber != null && x.PhoneNumber.Contains(magicFilter),
+            "lastname" => x => x.LastName.Contains(magicFilter),
+            "firstname" => x => x.FirstName.Contains(magicFilter),
+            "email" => x => x.Email.Contains(magicFilter),
+            "phonenumber" => x => x.PhoneNumber != null && x.PhoneNumber.Contains(magicFilter),
+            "city.name" => x => x.City != null && x.City.Name.Contains(magicFilter),
             _ => null
         });
 

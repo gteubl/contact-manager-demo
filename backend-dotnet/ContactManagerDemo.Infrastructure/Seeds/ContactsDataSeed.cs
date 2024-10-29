@@ -69,7 +69,7 @@ public static class SeedHelper
                 CitiesDataSeed.VeronaId
             };
             
-            for (var i = 0; i < 1000; i++)
+            /*for (var i = 0; i < 1000; i++)
             {
                 context.Contacts.Add(new Contact
                 {
@@ -81,7 +81,7 @@ public static class SeedHelper
                     Gender = (Gender)random.Next(1, 3),
                     CityId = cityIds[random.Next(cityIds.Count)]
                 });
-            }
+            }*/
 
             context.SaveChanges();
         }

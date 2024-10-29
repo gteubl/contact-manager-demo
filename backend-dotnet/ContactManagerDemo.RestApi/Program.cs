@@ -49,7 +49,7 @@ builder.Services.Configure<JsonOptions>(options =>
 
 var app = builder.Build();
 
-var runMigrations = builder.Configuration.GetValue<bool>("AppStartupConfig:SeedTestData");
+var runMigrations = builder.Configuration.GetValue<bool>("AppStartupConfig:RunMigrations");
 
 if (runMigrations)
 {
@@ -58,7 +58,7 @@ if (runMigrations)
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDataContext>();
     context.Database.Migrate();
-    Console.Write("Database migrated successfully");
+    Console.WriteLine("Database migrated successfully");
     
     var seedData = builder.Configuration.GetValue<bool>("AppStartupConfig:SeedTestData");
     
