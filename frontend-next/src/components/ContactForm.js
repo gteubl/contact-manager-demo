@@ -10,7 +10,7 @@ import {CitiesApi, ContactsApi} from "@/services/api";
 import {OpenApiConfig} from "@/services/OpenApiConfig";
 import {InputMask} from "primereact/inputmask";
 
-const ContactForm = ({contact, onSave}) => {
+const ContactForm = ({contact, onSave, onDelete}) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -99,14 +99,19 @@ const ContactForm = ({contact, onSave}) => {
 
         if (!validate()) return;
 
-        try {
-            if (onSave) {
-                await onSave(formData);
-            }
-        } catch (error) {
-            console.error("Error saving contact:", error);
+        if (onSave) {
+            await onSave(formData);
         }
     };
+
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        if (onDelete) {
+            await onDelete(formData);
+        }
+    }
+
 
     return (
         <form className="p-fluid grid" onSubmit={handleSubmit}>
@@ -169,8 +174,14 @@ const ContactForm = ({contact, onSave}) => {
                           }))} optionLabel="name" placeholder="Seleziona una città">
                 </Dropdown>
             </div>
+            <div className="grid col-12 gap-2">
+                <Button severity="danger" className="col w-10" label="Elimina" icon="pi pi-trash" onClick={(e) => {
+                    handleDelete(e);
+                }}/>
 
-            <Button label="Save" icon="pi pi-check" type="submit"/>
+                <Button className="col w-10" label="Salva" icon="pi pi-check" type="submit"/>
+            </div>
+
         </form>
     );
 };

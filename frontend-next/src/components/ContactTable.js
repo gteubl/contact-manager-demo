@@ -13,6 +13,7 @@ import {Button} from "primereact/button";
 import ContactForm from "@/components/ContactForm";
 import {Dialog} from "primereact/dialog";
 import {Toast} from "primereact/toast";
+import {debounce} from "lodash";
 
 const ContactTable = () => {
     const [loading, setLoading] = useState(true);
@@ -63,42 +64,31 @@ const ContactTable = () => {
 
     useEffect(() => {
         fetchContacts();
-    }, []);
+    }, [page, rows, sortField, sortOrder, debouncedMagicFilter]);
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedMagicFilter(magicFilter);
-        }, 300);
+    const debouncedFilter = useRef(
+        debounce((value) => {
+            setDebouncedMagicFilter(value);
+        }, 300)
+    ).current;
 
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [magicFilter]);
-
-    useEffect(() => {
-        fetchContacts();
-    }, [debouncedMagicFilter]);
-
+    const onChangeMagicFilter = (event) => {
+        setMagicFilter(event.target.value);
+        debouncedFilter(event.target.value);
+    }
 
     const onPageChange = async (event) => {
-        setLoading(true);
         setPage(event.page);
         setFirst(event.first);
         setRows(event.rows);
-        await fetchContacts();
     };
 
     const onSortChange = async (event) => {
         const newSortOrder = event.sortField === sortField ? -sortOrder : 1;
         setSortField(event.sortField);
         setSortOrder(newSortOrder);
-        setLoading(true);
-        await fetchContacts();
+    }
 
-    }
-    const onChangeMagicFilter = (event) => {
-        setMagicFilter(event.target.value);
-    }
 
     const showSuccess = (message) => {
         toast.current.show({severity: 'success', summary: 'Successo', detail: message, life: 3000});
@@ -117,7 +107,6 @@ const ContactTable = () => {
                 ...updatedContact
             }
         }
-
         try {
             if (updatedContact.id) {
 
@@ -132,6 +121,24 @@ const ContactTable = () => {
             showError('Errore durante il salvataggio del contatto');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const onDeleteContact = async (contact) => {
+        setEditModalVisible(false);
+        setLoading(true);
+        const requestParameters = {
+            id: contact.id
+        }
+        try {
+            await new ContactsApi(OpenApiConfig.getConfig()).apiContactsDeleteContactsDelete(requestParameters)
+            showSuccess('Contatto eliminato con successo');
+            await fetchContacts();
+        } catch (error) {
+
+            showError('Errore durante l\'eliminazione del contatto');
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -211,7 +218,7 @@ const ContactTable = () => {
             <Dialog header={contactDialogHeader} visible={editModalVisible} style={{width: '50vw'}}
                     onHide={() => setEditModalVisible(false)}
             >
-                <ContactForm contact={selectedContact} onSave={onSaveContact}/>
+                <ContactForm contact={selectedContact} onSave={onSaveContact} onDelete={onDeleteContact}/>
             </Dialog>
         </>
 
