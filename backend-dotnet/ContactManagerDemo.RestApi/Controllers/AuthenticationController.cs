@@ -18,7 +18,7 @@ public class AuthorizationController : ControllerBase
 
     [HttpPost("token")]
     [AllowAnonymous]
-    public async Task<IActionResult> Token(string username, string password)
+    public async Task<ActionResult<AuthUserDto>> Token(string username, string password)
     {
         var token = await _authenticationManager.Authenticate(username, password);
         if (token == null)
@@ -33,7 +33,7 @@ public class AuthorizationController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(typeof(AuthUserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+    public async Task<ActionResult<AuthUserDto>> Refresh([FromBody] RefreshTokenRequest request)
     {
         var authUser = await _authenticationManager.RefreshToken(request.Token, request.RefreshToken);
         if (authUser != null)

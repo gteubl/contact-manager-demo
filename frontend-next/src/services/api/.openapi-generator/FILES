@@ -1,13 +1,17 @@
+apis/AuthorizationApi.ts
 apis/CitiesApi.ts
 apis/ContactsApi.ts
+apis/SecretApi.ts
 apis/SeedApi.ts
 apis/index.ts
 index.ts
+models/AuthUserDto.ts
 models/CityDto.ts
 models/ContactDto.ts
 models/ContactsRequest.ts
 models/ContactsResponse.ts
 models/ContactsResponseGridDataSource.ts
 models/Gender.ts
+models/RefreshTokenRequest.ts
 models/index.ts
 runtime.ts

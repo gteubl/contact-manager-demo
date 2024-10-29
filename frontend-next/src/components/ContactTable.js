@@ -182,6 +182,8 @@ const ContactTable = () => {
             <Toast ref={toast}/>
             <DataTable
                 value={contacts}
+                tableStyle={{ minWidth: '50rem' }}
+                breakpoint="960px"
                 paginator
                 rows={rows}
                 stripedRows

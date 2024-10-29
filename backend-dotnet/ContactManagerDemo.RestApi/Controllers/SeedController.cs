@@ -16,17 +16,15 @@ public class SeedController : ControllerBase
     public async Task<IActionResult> Seed(int qtd = 10)
     {
         var command = new SeedTestContactsCommand(qtd);
-        var result = await _mediator.Send(command, HttpContext.RequestAborted);
-        return Ok(result);
+        await _mediator.Send(command, HttpContext.RequestAborted);
+        return Ok("Seed completed");
     }
     
     [HttpDelete("seed")]
     public async Task<IActionResult> RemoveSeed()
     {
         var command = new RemoveTestContactsCommand();
-        var result = await _mediator.Send(command, HttpContext.RequestAborted);
-        return Ok(result);
+        await _mediator.Send(command, HttpContext.RequestAborted);
+        return Ok("Seed removed");
     }
-    
-    
 }

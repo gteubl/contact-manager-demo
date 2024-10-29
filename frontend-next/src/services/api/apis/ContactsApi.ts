@@ -84,6 +84,11 @@ export class ContactsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
+
         const response = await this.request({
             path: `/api/Contacts/contacts`,
             method: 'GET',
@@ -109,6 +114,11 @@ export class ContactsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
 
         const response = await this.request({
             path: `/api/Contacts/contacts`,
@@ -136,6 +146,11 @@ export class ContactsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
 
         const response = await this.request({
             path: `/api/Contacts/create-contacts`,
@@ -165,6 +180,11 @@ export class ContactsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
+
         const response = await this.request({
             path: `/api/Contacts/delete-contacts`,
             method: 'DELETE',
@@ -189,6 +209,11 @@ export class ContactsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
 
         const response = await this.request({
             path: `/api/Contacts/update-contacts`,

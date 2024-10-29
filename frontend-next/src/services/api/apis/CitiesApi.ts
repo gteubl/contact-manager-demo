@@ -34,6 +34,11 @@ export class CitiesApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
+
         const response = await this.request({
             path: `/api/Cities/cities`,
             method: 'GET',

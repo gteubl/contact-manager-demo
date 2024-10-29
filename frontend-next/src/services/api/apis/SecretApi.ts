@@ -15,18 +15,14 @@
 
 import * as runtime from '../runtime';
 
-export interface ApiSeedSeedGetRequest {
-    qtd?: number;
-}
-
 /**
  * 
  */
-export class SeedApi extends runtime.BaseAPI {
+export class SecretApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiSeedSeedDeleteRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async apiSecretNonSecretGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -37,51 +33,57 @@ export class SeedApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/Seed/seed`,
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async apiSeedSeedDelete(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiSeedSeedDeleteRaw(initOverrides);
-    }
-
-    /**
-     */
-    async apiSeedSeedGetRaw(requestParameters: ApiSeedSeedGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        if (requestParameters['qtd'] != null) {
-            queryParameters['qtd'] = requestParameters['qtd'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
-        }
-
-        const response = await this.request({
-            path: `/api/Seed/seed`,
+            path: `/api/Secret/non-secret`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
     }
 
     /**
      */
-    async apiSeedSeedGet(requestParameters: ApiSeedSeedGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiSeedSeedGetRaw(requestParameters, initOverrides);
+    async apiSecretNonSecretGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.apiSecretNonSecretGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiSecretSecretGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("oauth2", []);
+        }
+
+        const response = await this.request({
+            path: `/api/Secret/secret`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     */
+    async apiSecretSecretGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.apiSecretSecretGetRaw(initOverrides);
+        return await response.value();
     }
 
 }
