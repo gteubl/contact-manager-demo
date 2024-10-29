@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "npm-install-legacy": "npm install --legacy-peer-deps",
     "generate-api": "openapi-generator-cli generate -i http://localhost:5000/swagger/v1/swagger.json -g  typescript-fetch -o ./src/services/api"
   },
   "dependencies": {

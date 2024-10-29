@@ -1,3 +1,4 @@
+apis/CitiesApi.ts
 apis/ContactsApi.ts
 apis/index.ts
 index.ts

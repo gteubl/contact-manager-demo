@@ -24,6 +24,6 @@ public class GetCitiesQueryHandler : IRequestHandler<GetCitiesQuery, List<CityDt
     public async Task<List<CityDto>> Handle(GetCitiesQuery request, CancellationToken cancellationToken)
     {
         var cities = await _appDataContext.Cities.ToListAsync(cancellationToken: cancellationToken);
-        return cities.Select(city => _mapper.Map<CityDto>(city)).ToList();
+        return cities.Select(city => _mapper.Map<CityDto>(city)).OrderBy(city => city.Name).ToList();
     }
 }

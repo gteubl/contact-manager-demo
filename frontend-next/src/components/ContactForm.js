@@ -4,18 +4,30 @@ import {useEffect, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {Button} from "primereact/button";
+import {EnumMapping} from "@/components/shared/EnumMapping";
+import {Dropdown} from "primereact/dropdown";
+import {CitiesApi, ContactsApi} from "@/services/api";
+import {OpenApiConfig} from "@/services/OpenApiConfig";
 
-const ContactForm = ({ contact, onSave }) => {
+const ContactForm = ({contact, onSave}) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: '',
-        city: { name: '' },
-        gender: '',
+        city: {name: ''},
+        gender: null,
         birthDate: null,
         ...contact
     });
+
+    const [cities, setCities] = useState([]);
+    const [errors, setErrors] = useState({});
+
+    const genderOptions = [
+        {label: EnumMapping.getGenderLabel(1), value: 1},
+        {label: EnumMapping.getGenderLabel(2), value: 2}
+    ];
 
     useEffect(() => {
         if (contact) {
@@ -23,16 +35,59 @@ const ContactForm = ({ contact, onSave }) => {
         }
     }, [contact]);
 
+    useEffect(() => {
+        fetchCity();
+    }, []);
+
+    const fetchCity = async (e) => {
+        const response = await new CitiesApi(OpenApiConfig.getConfig())
+            .apiCitiesCitiesGet()
+        console.log(response);
+        setCities(response);
+    }
+
+    const handleGenderChange = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            gender: e.value
+        }));
+    };
+
     const handleChange = (e) => {
-        const { id, value } = e.target;
+        const {id, value} = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [id]: value
         }));
     };
 
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.firstName) newErrors.firstName = "Nome è obbligatorio";
+        if (!formData.lastName) newErrors.lastName = "Cognome è obbligatorio";
+        if (!formData.gender) newErrors.gender = "Genere è obbligatorio";
+        if (!formData.email) {
+            newErrors.email = "Email è obbligatorio";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = "Email non è valido";
+        }
+        if (!formData.phoneNumber) {
+            newErrors.phoneNumber = "Numero di telefono è obbligatorio";
+        } else if (!/^\d{8,15}$/.test(formData.phoneNumber)) {
+            newErrors.phoneNumber = "Numero di telefono non è valido";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validate()) return;
+
         try {
             if (onSave) {
                 await onSave(formData);
@@ -43,42 +98,62 @@ const ContactForm = ({ contact, onSave }) => {
     };
 
     return (
-        <form className="p-fluid" onSubmit={handleSubmit}>
-            <div className="field">
-                <label htmlFor="firstName">First Name</label>
-                <InputText id="firstName" type="text" value={formData.firstName} onChange={handleChange} />
+        <form className="p-fluid grid" onSubmit={handleSubmit}>
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="firstName">Nome<span className="p-error">*</span> </label>
+                <InputText invalid={errors.firstName} id="firstName" type="text" value={formData.firstName}
+                           onChange={handleChange}/>
+                {errors.firstName && <small className="p-error">{errors.firstName}</small>}
             </div>
-            <div className="field">
-                <label htmlFor="lastName">Last Name</label>
-                <InputText id="lastName" type="text" value={formData.lastName} onChange={handleChange} />
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="lastName">Cognome<span className="p-error">*</span></label>
+                <InputText invalid={errors.lastName} id="lastName" type="text" value={formData.lastName}
+                           onChange={handleChange}/>
+                {errors.lastName && <small className="p-error">{errors.lastName}</small>}
             </div>
-            <div className="field">
-                <label htmlFor="email">Email</label>
-                <InputText id="email" type="email" value={formData.email} onChange={handleChange} />
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="gender">Sesso<span className="p-error">*</span></label>
+                <Dropdown
+                    id="gender"
+                    value={formData.gender}
+                    options={genderOptions}
+                    onChange={handleGenderChange}
+                    placeholder="Select Gender"
+                    invalid={errors.gender}
+                />
+                {errors.gender && <small className="p-error">{errors.gender}</small>}
             </div>
-            <div className="field">
-                <label htmlFor="phoneNumber">Phone Number</label>
-                <InputText id="phoneNumber" type="text" value={formData.phoneNumber} onChange={handleChange} />
-            </div>
-            <div className="field">
-                <label htmlFor="city">City</label>
-                <InputText id="city" type="text" value={formData.city.name} onChange={(e) => setFormData(prevData => ({
-                    ...prevData,
-                    city: { name: e.target.value }
-                }))} />
-            </div>
-            <div className="field">
-                <label htmlFor="gender">Gender</label>
-                <InputText id="gender" type="text" value={formData.gender} onChange={handleChange} />
-            </div>
-            <div className="field">
-                <label htmlFor="birthDate">Birth Date</label>
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="birthDate">Data di nascita</label>
                 <Calendar id="birthDate" value={formData.birthDate} onChange={(e) => setFormData(prevData => ({
                     ...prevData,
                     birthDate: e.value
-                }))} selectionMode='single' />
+                }))} selectionMode='single'/>
             </div>
-            <Button label="Save" icon="pi pi-check" type="submit" />
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="phoneNumber">Numero di telefono</label>
+                <InputText invalid={errors.phoneNumber} id="phoneNumber" type="text" value={formData.phoneNumber}
+                           onChange={handleChange}/>
+                {errors.phoneNumber && <small className="p-error">{errors.phoneNumber}</small>}
+            </div>
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="email">Email<span className="p-error">*</span></label>
+                <InputText invalid={errors.email} id="email" type="email" value={formData.email}
+                           onChange={handleChange}/>
+                {errors.email && <small className="p-error">{errors.email}</small>}
+            </div>
+
+            <div className="field col-12 lg:col-6">
+                <label htmlFor="city">Città </label>
+                <Dropdown id="city" value={formData.city} options={cities} onChange={(e) => setFormData(prevData => ({
+                    ...prevData,
+                    city: e.value
+                }))} optionLabel="name" placeholder="Seleziona una città">
+                </Dropdown>
+            </div>
+
+
+            <Button label="Save" icon="pi pi-check" type="submit"/>
         </form>
     );
 };

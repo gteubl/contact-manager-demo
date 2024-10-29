@@ -101,9 +101,6 @@ const ContactTable = () => {
         await fetchContacts();
     };
 
-
-
-
     const renderHeader = () => {
         return (
 
@@ -176,7 +173,7 @@ const ContactTable = () => {
             <Dialog header="Header" visible={editModalVisible} style={{width: '50vw'}}
                     onHide={() => setEditModalVisible(false)}
             >
-                <ContactForm contact={selectedContact} onSave={onSaveContact} />
+                <ContactForm contact={selectedContact} onSave={onSaveContact}/>
             </Dialog>
         </>
 
