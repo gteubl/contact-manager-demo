@@ -44,6 +44,14 @@ export interface ApiContactsCreateContactsPostRequest {
     contactDto?: ContactDto;
 }
 
+export interface ApiContactsDeleteContactsDeleteRequest {
+    id?: string;
+}
+
+export interface ApiContactsUpdateContactsPutRequest {
+    contactDto?: ContactDto;
+}
+
 /**
  * 
  */
@@ -144,6 +152,59 @@ export class ContactsApi extends runtime.BaseAPI {
      */
     async apiContactsCreateContactsPost(requestParameters: ApiContactsCreateContactsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.apiContactsCreateContactsPostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async apiContactsDeleteContactsDeleteRaw(requestParameters: ApiContactsDeleteContactsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Contacts/delete-contacts`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async apiContactsDeleteContactsDelete(requestParameters: ApiContactsDeleteContactsDeleteRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.apiContactsDeleteContactsDeleteRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async apiContactsUpdateContactsPutRaw(requestParameters: ApiContactsUpdateContactsPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/Contacts/update-contacts`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ContactDtoToJSON(requestParameters['contactDto']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async apiContactsUpdateContactsPut(requestParameters: ApiContactsUpdateContactsPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.apiContactsUpdateContactsPutRaw(requestParameters, initOverrides);
     }
 
 }

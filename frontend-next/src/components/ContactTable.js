@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState,} from 'react';
+import React, {useEffect, useRef, useState,} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {ContactsApi, Gender} from "@/services/api";
@@ -12,6 +12,7 @@ import {IconField} from "primereact/iconfield";
 import {Button} from "primereact/button";
 import ContactForm from "@/components/ContactForm";
 import {Dialog} from "primereact/dialog";
+import {Toast} from "primereact/toast";
 
 const ContactTable = () => {
     const [loading, setLoading] = useState(true);
@@ -27,6 +28,9 @@ const ContactTable = () => {
     const [debouncedMagicFilter, setDebouncedMagicFilter] = useState('');
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [selectedContact, setSelectedContact] = useState(null);
+    const [contactDialogHeader, setContactDialogHeader] = useState('Nuovo contatto');
+    const toast = useRef(null);
+
 
     const columnsToFilter = ["firstName", "lastName", "email", "phoneNumber", "city.name"];
 
@@ -96,10 +100,41 @@ const ContactTable = () => {
         setMagicFilter(event.target.value);
     }
 
+    const showSuccess = (message) => {
+        toast.current.show({severity: 'success', summary: 'Successo', detail: message, life: 3000});
+    }
+
+    const showError = (message) => {
+        toast.current.show({severity: 'error', summary: 'Errore', detail: message, life: 3000});
+    }
+
     const onSaveContact = async (updatedContact) => {
         setEditModalVisible(false);
-        await fetchContacts();
+        setLoading(true);
+
+        const requestParameters = {
+            contactDto: {
+                ...updatedContact
+            }
+        }
+
+        try {
+            if (updatedContact.id) {
+
+                await new ContactsApi(OpenApiConfig.getConfig()).apiContactsUpdateContactsPut(requestParameters);
+            } else {
+                await new ContactsApi(OpenApiConfig.getConfig()).apiContactsCreateContactsPost(requestParameters);
+            }
+            showSuccess('Contatto salvato con successo');
+
+            await fetchContacts();
+        } catch (error) {
+            showError('Errore durante il salvataggio del contatto');
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     const renderHeader = () => {
         return (
@@ -110,23 +145,25 @@ const ContactTable = () => {
                     <InputText value={magicFilter} onChange={onChangeMagicFilter} placeholder="Filtra risultati..."/>
                 </IconField>
 
-                <Button icon="pi pi-plus" rounded text raised aria-label="plus"/>
+                <Button icon="pi pi-plus" rounded text raised aria-label="plus"
+                        onClick={() => {
+                            setContactDialogHeader('Nuovo contatto');
+                            setEditModalVisible(true);
+                            setSelectedContact(null);
+                        }}
+                />
             </div>
         );
     };
 
     const editTemplate = (rowData) => {
         return (
-            <>
-                <Button icon="pi pi-pencil" rounded text raised aria-label="Search"
-                        onClick={() => {
-                            setEditModalVisible(true);
-                            setSelectedContact(rowData);
-                        }
-
-                        }/>
-
-            </>
+            <Button icon="pi pi-pencil" rounded text raised aria-label="Search"
+                    onClick={() => {
+                        setContactDialogHeader('Modifica contatto');
+                        setEditModalVisible(true);
+                        setSelectedContact(rowData);
+                    }}/>
         )
     }
 
@@ -135,6 +172,7 @@ const ContactTable = () => {
 
     return (
         <>
+            <Toast ref={toast}/>
             <DataTable
                 value={contacts}
                 paginator
@@ -170,7 +208,7 @@ const ContactTable = () => {
                 }}/>
             </DataTable>
 
-            <Dialog header="Header" visible={editModalVisible} style={{width: '50vw'}}
+            <Dialog header={contactDialogHeader} visible={editModalVisible} style={{width: '50vw'}}
                     onHide={() => setEditModalVisible(false)}
             >
                 <ContactForm contact={selectedContact} onSave={onSaveContact}/>

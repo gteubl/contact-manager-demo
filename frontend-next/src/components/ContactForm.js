@@ -8,6 +8,7 @@ import {EnumMapping} from "@/components/shared/EnumMapping";
 import {Dropdown} from "primereact/dropdown";
 import {CitiesApi, ContactsApi} from "@/services/api";
 import {OpenApiConfig} from "@/services/OpenApiConfig";
+import {InputMask} from "primereact/inputmask";
 
 const ContactForm = ({contact, onSave}) => {
     const [formData, setFormData] = useState({
@@ -42,14 +43,24 @@ const ContactForm = ({contact, onSave}) => {
     const fetchCity = async (e) => {
         const response = await new CitiesApi(OpenApiConfig.getConfig())
             .apiCitiesCitiesGet()
-        console.log(response);
         setCities(response);
+    }
+
+    const showSuccess = () => {
+        toast.current.show({severity: 'success', summary: 'Success', detail: 'Message Content', life: 3000});
     }
 
     const handleGenderChange = (e) => {
         setFormData((prevData) => ({
             ...prevData,
             gender: e.value
+        }));
+    };
+
+    const handlePhoneChange = (e) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            phoneNumber: e.target.value
         }));
     };
 
@@ -74,7 +85,7 @@ const ContactForm = ({contact, onSave}) => {
         }
         if (!formData.phoneNumber) {
             newErrors.phoneNumber = "Numero di telefono è obbligatorio";
-        } else if (!/^\d{8,15}$/.test(formData.phoneNumber)) {
+        } else if (!/^\+39\s\d{3}\s\d{3}\s\d{4}$/.test(formData.phoneNumber)) {
             newErrors.phoneNumber = "Numero di telefono non è valido";
         }
 
@@ -132,9 +143,15 @@ const ContactForm = ({contact, onSave}) => {
             </div>
             <div className="field col-12 lg:col-6">
                 <label htmlFor="phoneNumber">Numero di telefono</label>
-                <InputText invalid={errors.phoneNumber} id="phoneNumber" type="text" value={formData.phoneNumber}
-                           onChange={handleChange}/>
+                <InputMask
+                    invalid={errors.phoneNumber}
+                    value={formData.phoneNumber}
+                    onChange={handlePhoneChange}
+                    mask="+39 999 999 9999"
+                    placeholder="+39 331 987 6543"
+                />
                 {errors.phoneNumber && <small className="p-error">{errors.phoneNumber}</small>}
+
             </div>
             <div className="field col-12 lg:col-6">
                 <label htmlFor="email">Email<span className="p-error">*</span></label>
@@ -145,13 +162,13 @@ const ContactForm = ({contact, onSave}) => {
 
             <div className="field col-12 lg:col-6">
                 <label htmlFor="city">Città </label>
-                <Dropdown id="city" value={formData.city} options={cities} onChange={(e) => setFormData(prevData => ({
-                    ...prevData,
-                    city: e.value
-                }))} optionLabel="name" placeholder="Seleziona una città">
+                <Dropdown id="city" value={formData.city} options={cities}
+                          onChange={(e) => setFormData(prevData => ({
+                              ...prevData,
+                              city: e.value
+                          }))} optionLabel="name" placeholder="Seleziona una città">
                 </Dropdown>
             </div>
-
 
             <Button label="Save" icon="pi pi-check" type="submit"/>
         </form>

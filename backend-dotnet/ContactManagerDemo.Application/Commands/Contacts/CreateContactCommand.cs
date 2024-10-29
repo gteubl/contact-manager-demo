@@ -22,6 +22,7 @@ public class CreateContactCommandHandler : IRequestHandler<CreateContactCommand,
     public async Task<ContactDto> Handle(CreateContactCommand request, CancellationToken cancellationToken)
     {
         var contact = _mapper.Map<Contact>(request.Contact);
+        contact.City = null;
         await _appDataContext.Contacts.AddAsync(contact, cancellationToken);
         await _appDataContext.SaveChangesAsync(cancellationToken);
         return _mapper.Map<ContactDto>(contact);

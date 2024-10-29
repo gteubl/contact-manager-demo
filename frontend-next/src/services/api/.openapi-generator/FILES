@@ -1,5 +1,6 @@
 apis/CitiesApi.ts
 apis/ContactsApi.ts
+apis/SeedApi.ts
 apis/index.ts
 index.ts
 models/CityDto.ts

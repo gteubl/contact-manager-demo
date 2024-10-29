@@ -52,36 +52,6 @@ public static class SeedHelper
                     CityId = CitiesDataSeed.FirenzeId
                 }
             );
-            
-            var random = new Random();
-            
-            var cityIds = new List<Guid>
-            {
-                CitiesDataSeed.BresciaId,
-                CitiesDataSeed.GenovaId,
-                CitiesDataSeed.MilanoId,
-                CitiesDataSeed.RomaId,
-                CitiesDataSeed.NapoliId,
-                CitiesDataSeed.TorinoId,
-                CitiesDataSeed.FirenzeId,
-                CitiesDataSeed.VeneziaId,
-                CitiesDataSeed.BolognaId,
-                CitiesDataSeed.VeronaId
-            };
-            
-            /*for (var i = 0; i < 1000; i++)
-            {
-                context.Contacts.Add(new Contact
-                {
-                    FirstName = $"Contact {i}",
-                    LastName = $"Lastname {i}",
-                    PhoneNumber = $"+39 320 678 {random.Next(1000, 9999)}", 
-                    Email = $"contact{i}@example.com",
-                    BirthDate = DateTime.Now.AddYears(-random.Next(20, 70)).AddDays(random.Next(0, 365)),
-                    Gender = (Gender)random.Next(1, 3),
-                    CityId = cityIds[random.Next(cityIds.Count)]
-                });
-            }*/
 
             context.SaveChanges();
         }

@@ -57,4 +57,20 @@ public class ContactsController : ControllerBase
         var result = await _mediator.Send(command, HttpContext.RequestAborted);
         return Ok(result);
     }
+    
+    [HttpPut("update-contacts")]
+    public async Task<IActionResult> UpdateContact(ContactDto contactDto)
+    {
+        var command = new UpdateContactCommand(contactDto);
+        var result = await _mediator.Send(command, HttpContext.RequestAborted);
+        return Ok(result);
+    }
+    
+    [HttpDelete("delete-contacts")]
+    public async Task<IActionResult> DeleteContact(Guid id)
+    {
+        var command = new DeleteContactCommand(id);
+        var result = await _mediator.Send(command, HttpContext.RequestAborted);
+        return Ok(result);
+    }
 }
