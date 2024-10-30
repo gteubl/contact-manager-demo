@@ -15,8 +15,8 @@ namespace ContactManagerDemo.Application.Authentication;
 
 public interface IAuthenticationManager
 {
-    Task<AuthUserDto?> Authenticate(string username, string password);
-    Task<AuthUserDto?> RefreshToken(string token, string refreshToken);
+    Task<AuthUser?> Authenticate(string username, string password);
+    Task<AuthUser?> RefreshToken(string token, string refreshToken);
 }
 
 public static class CustomClaimTypes
@@ -39,13 +39,10 @@ public class AuthenticationManager : IAuthenticationManager
     }
 
 
-    public async Task<AuthUserDto?> Authenticate(string username, string password)
+    public async Task<AuthUser?> Authenticate(string username, string password)
     {
-        var connectionString = _configuration.GetConnectionString("SqlDataConnection");
-        var optionsBuilder = new DbContextOptionsBuilder<AppDataContext>();
-        optionsBuilder.UseSqlServer(connectionString);
-        var options = optionsBuilder.Options;
-        await using var context = new AppDataContext(options);
+        
+        var context = _serviceProvider.GetRequiredService<AppDataContext>();
         
         var loginUser = await context.Users.IgnoreQueryFilters()
             .FirstOrDefaultAsync(u => u.Username == username);
@@ -54,7 +51,7 @@ public class AuthenticationManager : IAuthenticationManager
         {
             return null;
         }
-        var passwordService = new PasswordService();
+        var passwordService = _serviceProvider.GetRequiredService<IPasswordService>();
         var isPasswordValid = passwordService.ValidatePassword(password, loginUser.Salt, loginUser.HashedPassword);
 
         if (!isPasswordValid)
@@ -80,16 +77,12 @@ public class AuthenticationManager : IAuthenticationManager
         return GetAuthUser(accessToken, tokenDescriptor, loginUser, refreshToken);
     }
 
-    public async Task<AuthUserDto?> RefreshToken(string token, string refreshToken)
+    public async Task<AuthUser?> RefreshToken(string token, string refreshToken)
     {
         var principal = GetPrincipalFromExpiredToken(token);
         var userId = AuthUtils.GetCurrentUserId(principal);
 
-        var connectionString = _configuration.GetConnectionString("SqlDataConnection");
-        var optionsBuilder = new DbContextOptionsBuilder<AppDataContext>();
-        optionsBuilder.UseSqlServer(connectionString);
-        var options = optionsBuilder.Options;
-        await using var context = new AppDataContext(options);
+        var context = _serviceProvider.GetRequiredService<AppDataContext>();
         
         var user = await context.Users.IgnoreQueryFilters()
             .FirstOrDefaultAsync(u => u.Id == userId && u.RefreshToken == refreshToken);
@@ -108,7 +101,7 @@ public class AuthenticationManager : IAuthenticationManager
         * await ctx.SaveChangesAsync();
         */
 
-        return new AuthUserDto
+        return new AuthUser
         {
             AccessToken = newAccessToken,
             RefreshToken = refreshToken, //newRefreshToken,
@@ -176,10 +169,10 @@ public class AuthenticationManager : IAuthenticationManager
         return claims;
     }
 
-    private static AuthUserDto GetAuthUser(string accessToken, SecurityTokenDescriptor tokenDescriptor,
+    private static AuthUser GetAuthUser(string accessToken, SecurityTokenDescriptor tokenDescriptor,
         User user, string refreshToken)
     {
-        var authUser = new AuthUserDto
+        var authUser = new AuthUser
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,

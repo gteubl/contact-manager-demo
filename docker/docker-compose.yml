@@ -17,6 +17,7 @@ services:
 
   backend-portal:
     image: backend_image
+    container_name: backend_dotnet
     build:
       context: ../backend-dotnet
       dockerfile: ContactManagerDemo.RestApi/Dockerfile
@@ -34,6 +35,7 @@ services:
 
   frontend:
     image: frontend_image
+    container_name: frontend_next
     build:
       context: ../frontend-next
     ports:

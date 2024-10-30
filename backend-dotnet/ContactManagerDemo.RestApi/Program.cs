@@ -63,7 +63,7 @@ builder.Services.AddApplicationServices();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetContactsQuery).Assembly));
 
-var origins = builder.Configuration.GetValue<string>("AllowOrigins").Split(";");
+var origins = builder.Configuration.GetValue<string>("AllowOrigins")!.Split(";");
 
 builder.Services.AddCors(
     options =>
@@ -87,6 +87,10 @@ builder.Services.Configure<JsonOptions>(options =>
 });
 
 var tokenKey = builder.Configuration.GetValue<string>("Token:Key");
+
+if (tokenKey == null)
+    throw new Exception("Token key not found in configuration");
+
 var key = Encoding.ASCII.GetBytes(tokenKey);
 builder.Services.AddAuthentication(
         auth =>
@@ -139,7 +143,7 @@ builder.Services.AddAuthentication(
     );
 
 
-builder.Services.AddSingleton<IAuthenticationManager>(options =>
+builder.Services.AddScoped<IAuthenticationManager>(options =>
     new AuthenticationManager(tokenKey, builder.Configuration, options));
 
 

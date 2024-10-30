@@ -2,18 +2,18 @@
 
 namespace ContactManagerDemo.Application.Dto;
 
-public class AuthUserDto
+public class AuthUser
 {
     public Guid UserId { get; set; }
     
-    public string Username { get; set; }
+    public required string Username { get; set; }
     
     [JsonPropertyName("access_token")]
-    public string AccessToken { get; set; }
+    public required string AccessToken { get; set; }
 
     [JsonPropertyName("expires_in")]
     public DateTime ExpiresIn { get; set; }
         
     [JsonPropertyName("refresh_token")]
-    public string RefreshToken { get;  set; }
+    public required string RefreshToken { get;  set; }
 }

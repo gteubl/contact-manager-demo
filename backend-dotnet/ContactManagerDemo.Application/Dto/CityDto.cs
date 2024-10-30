@@ -3,7 +3,7 @@
 public class CityDto
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string Province { get; set; }
+    public required string Name { get; set; }
+    public required string Province { get; set; }
     
 }

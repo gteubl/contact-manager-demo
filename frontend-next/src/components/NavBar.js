@@ -2,7 +2,7 @@
 
 import {Button} from "primereact/button";
 import {useRouter} from 'next/navigation';
-import {Menubar} from "primereact/menubar";
+import {Toolbar} from "primereact/toolbar";
 
 
 const NavBar = () => {
@@ -28,9 +28,9 @@ const NavBar = () => {
     );
 
     return (
-        <Menubar start={startContent}
+        <Toolbar start={startContent}
                  end={endContent}
-        ></Menubar>
+        ></Toolbar>
     );
 }
 

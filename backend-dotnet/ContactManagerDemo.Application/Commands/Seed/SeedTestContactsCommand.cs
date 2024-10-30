@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ContactManagerDemo.Application.Commands.Seed;
 
-public record SeedTestContactsCommand(int qtd) : IRequest<Unit>;
+public record SeedTestContactsCommand(int Qtd) : IRequest<Unit>;
 
 public class SeedTestContactsCommandHandler : IRequestHandler<SeedTestContactsCommand, Unit>
 {
@@ -42,7 +42,7 @@ public class SeedTestContactsCommandHandler : IRequestHandler<SeedTestContactsCo
             "Rossi", "Toni", "Mezzogiorno", "Loren", "Baggio", "Buffon", "Del Piero", "Neri", "Bianchi", "Verdi"
         };
 
-        for (var i = 0; i < request.qtd; i++)
+        for (var i = 0; i < request.Qtd; i++)
         {
             var name = randomNames[random.Next(randomNames.Count)];
             var surname = randomSurnames[random.Next(randomSurnames.Count)];

@@ -12,7 +12,7 @@ public static class ApplicationServiceCollectionExtensions
         var mapper = mapperConfig.CreateMapper();
         services.TryAddSingleton(mapper);
         
-        services.TryAddScoped<IPasswordService, PasswordService>();
+        services.TryAddSingleton<IPasswordService, PasswordService>();
     }
     
 }

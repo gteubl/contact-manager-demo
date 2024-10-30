@@ -46,10 +46,6 @@ const ContactForm = ({contact, onSave, onDelete}) => {
         setCities(response);
     }
 
-    const showSuccess = () => {
-        toast.current.show({severity: 'success', summary: 'Success', detail: 'Message Content', life: 3000});
-    }
-
     const handleGenderChange = (e) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -175,7 +171,7 @@ const ContactForm = ({contact, onSave, onDelete}) => {
                 </Dropdown>
             </div>
             <div className="grid col-12 gap-2">
-                <Button severity="danger" className="col w-10" label="Elimina" icon="pi pi-trash" onClick={(e) => {
+                <Button severity="danger" disabled={!formData.id} className="col w-10" label="Elimina" icon="pi pi-trash" onClick={(e) => {
                     handleDelete(e);
                 }}/>
 

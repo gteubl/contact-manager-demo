@@ -31,8 +31,8 @@ public static class DtoToEntityMappers
                 
         });
     }
-    
-    public static void IgnoreGridDataItemProperties<TSource, TDestination>(
+
+    private static void IgnoreGridDataItemProperties<TSource, TDestination>(
         this IMappingExpression<TSource, TDestination> mapping)
     where TDestination : IGridDataItem
     {
@@ -40,7 +40,7 @@ public static class DtoToEntityMappers
             .ForMember(dest => dest.Selected, opt => opt.Ignore());
     }
 
-    public static void IgnoreCommonProperties<TSource, TDestination>(
+    private static void IgnoreCommonProperties<TSource, TDestination>(
         this IMappingExpression<TSource, TDestination> mapping)
     where TDestination : BaseEntity
     {

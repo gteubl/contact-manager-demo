@@ -89,7 +89,6 @@ const ContactTable = () => {
         setSortOrder(newSortOrder);
     }
 
-
     const showSuccess = (message) => {
         toast.current.show({severity: 'success', summary: 'Successo', detail: message, life: 3000});
     }
@@ -182,7 +181,7 @@ const ContactTable = () => {
             <Toast ref={toast}/>
             <DataTable
                 value={contacts}
-                tableStyle={{ minWidth: '50rem' }}
+                tableStyle={{minWidth: '50rem'}}
                 breakpoint="960px"
                 paginator
                 rows={rows}
