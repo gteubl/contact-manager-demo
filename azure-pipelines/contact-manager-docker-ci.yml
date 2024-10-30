@@ -1,0 +1,59 @@
+name: 'Contact Manager - Build and Push Docker Compose'
+
+# pr:
+#   branches:
+#     include:
+#       - master
+
+# trigger:
+#   branches:
+#     include:
+#       - develop
+#   paths:
+#     include:
+#       - apps/frontend-next
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ACR_NAME: 'contactmanager' 
+  IMAGE_TAG: '$(Build.BuildId)'
+  SERVICE_CONNECTION: 'ContactManagerAzureServiceConnection'
+
+
+steps:
+  - checkout: self
+    submodules: true
+    
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: $(SERVICE_CONNECTION)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az acr login --name $(ACR_NAME)
+        
+  - task: DockerCompose@1
+    displayName: 'Build services'
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'ContactManagerAzureServiceConnection'
+      azureContainerRegistry: '{"loginServer":"contactmanager.azurecr.io", "id" : "/subscriptions/XXXXXXXXXXXXXXXX/resourceGroups/ContactManager/providers/Microsoft.ContainerRegistry/registries/contactmanager"}'
+      dockerComposeFile: 'docker/docker-compose.yml'
+      action: 'Build services'
+      tags: '$(IMAGE_TAG)'
+      projectName: 'contactmanager'
+
+  - task: DockerCompose@1
+    displayName: 'Push services'
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureSubscription: 'ContactManagerAzureServiceConnection'
+      azureContainerRegistry: '{"loginServer":"contactmanager.azurecr.io", "id" : "/subscriptions/XXXXXXXXXXXXXXXX/resourceGroups/ContactManager/providers/Microsoft.ContainerRegistry/registries/contactmanager"}'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Push services'
+      tags: '$(IMAGE_TAG)'
+      projectName: 'contactmanager'

@@ -1,0 +1,47 @@
+﻿name: 'Contact Manager - Create ACI for All Services'
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ACR_NAME: 'contactmanager'
+  IMAGE_TAG: 'latest' 
+  RESOURCE_GROUP: 'ContactManager'
+  DNS_PREFIX: 'contactmanager'
+
+steps:
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'ContactManagerAzureServiceConnection'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az acr login --name $(ACR_NAME)
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'ContactManagerAzureServiceConnection'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az container create \
+          --resource-group $(RESOURCE_GROUP) \
+          --name frontend-next \
+          --image $(ACR_NAME).azurecr.io/frontend-next:$(IMAGE_TAG) \
+          --dns-name-label frontend-next-$(DNS_PREFIX) \
+          --ports 3000
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'ContactManagerAzureServiceConnection'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az container create \
+          --resource-group $(RESOURCE_GROUP) \
+          --name backend-dotnet \
+          --image $(ACR_NAME).azurecr.io/backend-dotnet:$(IMAGE_TAG) \
+          --dns-name-label backend-dotnet-$(DNS_PREFIX) \
+          --ports 5000
